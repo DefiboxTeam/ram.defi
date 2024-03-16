@@ -43,7 +43,7 @@ $ cleos push action ram.defi transfer '["tester1", "tester2", "1 BRAM", ""]' -p 
 $ cleos push action vault.defi updatestatus '[true, true]' -p admin.defi
 
 # modify deposit/withdraw fee ratio (ex: 50 -> 0.005) 
-$ cleos push action vault.defi updatestatus '[50, 50]' -p admin.defi
+$ cleos push action vault.defi updateratio '[50, 50]' -p admin.defi
 ```
 
 ### Viewing Table Information
