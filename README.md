@@ -1,6 +1,7 @@
 
 # Defibox-Vault
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/defiboxswap/ram.defi/blob/main/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/DefiboxTeam/ram.defi/blob/main/LICENSE)
+[![Test](https://github.com/DefiboxTeam/ram.defi/actions/workflows/test.yml/badge.svg)](https://github.com/DefiboxTeam/ram.defi/actions/workflows/test.yml)
 
 # Overview
 BRAM is a RAM resource certificate issued by Defibox. This certificate can be transferred, traded and participated in more Defi gameplay at will. For example, in the Swap protocol, you can conduct transactions with low fees, in the USN protocol, you can obtain the stable currency USN as collateral, and in the lending protocol, you can lend other tokens as collateral to improve usage efficiency.
