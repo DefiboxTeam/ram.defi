@@ -50,25 +50,24 @@ void ram::transfer(const name& from, const name& to, const asset& quantity, cons
 
     asset from_balance;
     asset to_balance = asset(0, quantity.symbol);
+
+    // from -> to
+    auto payer = has_auth(to) ? to : from;
+    from_balance = sub_balance(from, quantity);
+    to_balance = add_balance(to, quantity, payer);
+
     if (to == get_self()) {
         if(memo == "ram"){
             do_withdraw_ram(from, quantity);
         }else {
             do_withdraw_eos(from, quantity);
         }
-        // from balance
 
-        accounts from_acnts(get_self(), from.value);
-        auto from = from_acnts.require_find(quantity.symbol.code().raw(), "no balance object found");
+        accounts to_acnts(get_self(), to.value);
+        auto to_itr = to_acnts.require_find(quantity.symbol.code().raw(), "no balance object found");
 
-        from_balance = from->balance;
-    } else {
-        auto payer = has_auth(to) ? to : from;
-
-        from_balance = sub_balance(from, quantity);
-        to_balance = add_balance(to, quantity, payer);
-    }
-
+        to_balance = to_itr->balance;
+    } 
     action(permission_level{_self, "active"_n}, _self, "transferlog"_n, make_tuple(from, to, quantity, from_balance, to_balance)).send();
 }
 
@@ -103,8 +102,6 @@ void ram::on_ramtransfer(const name& from, const name& to, int64_t bytes, const 
     if (to != get_self())
         return;
 
-    // authenticate incoming `from` account
-    require_auth(from);
 
     const name contract = get_first_receiver();
     check(contract == EOSIO_ACCOUNT, "ram.defi::depositram: only the eosio contract may send RAM bytes to this contract.");
@@ -117,9 +114,6 @@ void ram::on_transfer(const name& from, const name& to, const asset& quantity, c
     // ignore transfers
     if (to != get_self())
         return;
-
-    // authenticate incoming `from` account
-    require_auth(from);
 
     const name contract = get_first_receiver();
     check(contract == EOS_CONTRACT && quantity.symbol == EOS, "ram.defi::deposit: only transfer [eosio.token/EOS,ram.defi/BRAM] ");
@@ -186,7 +180,7 @@ void ram::do_withdraw_ram(const name& owner, const asset& quantity) {
     auto to_account_bytes = quantity - withdraw_fee;
 
     // retire
-    retire(owner, to_account_bytes);
+    retire(get_self(), to_account_bytes);
 
     // transfer fee
     if(withdraw_fee.amount > 0){
@@ -205,7 +199,7 @@ void ram::do_withdraw_eos(const name& owner, const asset& quantity) {
     check(!_config.disabled_withdraw, "ram.defi::withdraw: withdraw has been suspended");
 
     // retire
-    retire(owner, quantity);
+    retire(get_self(), quantity);
 
     // sellram
     asset output_amount = sellram(RAM_BANK_ACCOUNT, quantity.amount);
