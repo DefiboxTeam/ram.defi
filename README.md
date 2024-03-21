@@ -6,6 +6,10 @@
 # Overview
 BRAM is a RAM resource certificate issued by Defibox. This certificate can be transferred, traded and participated in more Defi gameplay at will. For example, in the Swap protocol, you can conduct transactions with low fees, in the USN protocol, you can obtain the stable currency USN as collateral, and in the lending protocol, you can lend other tokens as collateral to improve usage efficiency.
 
+# Cdt
+
+- <a href="https://github.com/AntelopeIO/cdt/releases/download/v4.0.1/cdt_4.0.1_amd64.deb"> cdt_4.0.1_amd64.deb</a>
+
 # Audits
 
 - <a href="https://github.com/blocksecteam/audit-reports/blob/main/solidity/blocksec_ramdefi_v1.0-signed.pdf"> Blocksec Audit</a>
